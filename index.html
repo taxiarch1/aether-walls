@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether Walls // Premium Wallpaper Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aether: {
+                            dark: '#090a0f',
+                            card: '#121520',
+                            border: '#1f243d',
+                            accent: '#6366f1',
+                            glow: '#818cf8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090a0f;
+            color: #f3f4f6;
+        }
+        .glass-panel {
+            background: rgba(18, 21, 32, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(9, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .wallpaper-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .wallpaper-card:hover {
+            transform: translateY(-6px);
+        }
+        .wallpaper-card:hover img {
+            transform: scale(1.06);
+        }
+        .wallpaper-card img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f243d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <header class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="filterCategory('All')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-400 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-white">AETHER<span class="text-indigo-400">WALLS</span></span>
+                    <span class="block text-[10px] tracking-widest text-indigo-300 uppercase font-mono">Curated Visuals</span>
+                </div>
+            </div>
+
+            <!-- Search Bar in Header -->
+            <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search 4K wallpapers by title, tag, or mood..." class="w-full bg-aether-card border border-white/10 rounded-full pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition shadow-inner">
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleFavoritesView()" id="fav-nav-btn" class="px-4 py-2 rounded-full border border-white/10 hover:border-indigo-500 bg-aether-card/60 text-xs font-medium text-gray-300 hover:text-white transition flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-pink-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span id="fav-count-badge" class="bg-indigo-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-32 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center relative">
+        <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+            <div class="w-[500px] h-[500px] bg-indigo-600/15 rounded-full blur-[120px]"></div>
+            <div class="w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-6 animate-pulse">
+            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+            <span>Over 1,200+ Ultra HD & 4K Wallpapers Added Weekly</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+            Immersive Aesthetics for Your <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">Digital Workspace</span>
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto font-light">
+            Hand-curated, high-resolution desktop and mobile wallpapers engineered for modern creators, developers, and designers.
+        </p>
+
+        <!-- Category Filter Pills -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-2.5">
+            <button onclick="filterCategory('All')" id="cat-All" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">All Wallpapers</button>
+            <button onclick="filterCategory('Nature')" id="cat-Nature" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500">Nature</button>
+            <button onclick="filterCategory('Cyberpunk')" id="cat-Cyberpunk" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500">Cyberpunk</button>
+            <button onclick="filterCategory('Architecture')" id="cat-Architecture" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500">Architecture</button>
+            <button onclick="filterCategory('Minimalism')" id="cat-Minimalism" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500">Minimalism</button>
+            <button onclick="filterCategory('Abstract')" id="cat-Abstract" class="cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500">Abstract</button>
+        </div>
+    </section>
+
+    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20">
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Populated dynamically via JavaScript -->
+        </div>
+
+        <div id="no-results" class="hidden text-center py-24 space-y-3">
+            <svg class="w-12 h-12 text-gray-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h3 class="text-lg font-bold text-white">No wallpapers found</h3>
+            <p class="text-xs text-gray-400">Try searching for something else or switch categories.</p>
+        </div>
+    </main>
+
+    <div id="detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div class="glass-panel rounded-2xl max-w-4xl w-full overflow-hidden border border-white/10 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition border border-white/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <div class="lg:col-span-7 bg-black flex items-center justify-center relative overflow-hidden group min-h-[320px]">
+                    <img id="modal-img" src="" alt="Wallpaper Preview" class="w-full h-full object-cover max-h-[500px]">
+                </div>
+                <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span id="modal-category" class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Category</span>
+                            <button onclick="toggleModalFavorite()" id="modal-fav-btn" class="p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition text-gray-300">
+                                <svg id="modal-fav-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            </button>
+                        </div>
+                        <div>
+                            <h2 id="modal-title" class="text-xl font-bold text-white">Wallpaper Title</h2>
+                            <p id="modal-author" class="text-xs text-gray-400 mt-1">Photo by <span class="text-indigo-400">Author Name</span></p>
+                        </div>
+
+                        <!-- Specs Grid -->
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="bg-black/30 border border-white/5 p-3 rounded-xl">
+                                <span class="block text-[10px] text-gray-400 uppercase font-mono">Resolution</span>
+                                <span id="modal-res" class="text-xs font-bold text-white mt-0.5 block">3840 x 2160 4K</span>
+                            </div>
+                            <div class="bg-black/30 border border-white/5 p-3 rounded-xl">
+                                <span class="block text-[10px] text-gray-400 uppercase font-mono">Downloads</span>
+                                <span id="modal-downloads" class="text-xs font-bold text-white mt-0.5 block">14.2K</span>
+                            </div>
+                        </div>
+
+                        <!-- Color Palette / Tags -->
+                        <div>
+                            <span class="block text-[10px] text-gray-400 uppercase font-mono mb-2">Aesthetic Tags</span>
+                            <div id="modal-tags" class="flex flex-wrap gap-1.5">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Download Action Buttons -->
+                    <div class="space-y-3 pt-4 border-t border-white/10">
+                        <a id="modal-download-btn" href="#" target="_blank" download class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/30 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            <span>Download 4K Original</span>
+                        </a>
+                        <button onclick="copyWallpaperLink()" class="w-full py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                            <span id="copy-btn-text">Copy Direct Image Link</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-aether-dark py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-white">AETHER WALLS</span>
+                <span>&copy; 2026. Crafted for aesthetic workspaces.</span>
+            </div>
+            <div class="flex space-x-6">
+                <span class="hover:text-indigo-400 cursor-pointer" onclick="filterCategory('All')">Explore</span>
+                <span class="hover:text-indigo-400 cursor-pointer" onclick="toggleFavoritesView()">Favorites</span>
+                <span class="hover:text-indigo-400 cursor-pointer" onclick="openInfoModal()">License</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const wallpapers = [
+            {
+                id: 1,
+                title: "Neon Rain over Neo-Tokyo",
+                category: "Cyberpunk",
+                author: "Alexandre Chambon",
+                res: "3840 x 2160",
+                downloads: "24.5K",
+                url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Cyberpunk", "Neon", "Rain", "Cityscape", "Dark"]
+            },
+            {
+                id: 2,
+                title: "Mist Over Pine Ridge",
+                category: "Nature",
+                author: "Sebastian Unrau",
+                res: "3840 x 2160",
+                downloads: "19.1K",
+                url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Nature", "Mountains", "Forest", "Mist", "Green"]
+            },
+            {
+                id: 3,
+                title: "Brutalist Concrete Geometry",
+                category: "Architecture",
+                author: "Kalen Emsley",
+                res: "3840 x 2160",
+                downloads: "12.8K",
+                url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Architecture", "Brutalism", "Minimal", "Concrete", "Monochrome"]
+            },
+            {
+                id: 4,
+                title: "Zenith Gradient Void",
+                category: "Minimalism",
+                author: "Javier Allegue Barros",
+                res: "3840 x 2160",
+                downloads: "31.4K",
+                url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Minimalism", "Gradient", "Abstract", "Purple", "Clean"]
+            },
+            {
+                id: 5,
+                title: "Cosmic Nebula Dust",
+                category: "Abstract",
+                author: "NASA",
+                res: "3840 x 2160",
+                downloads: "42.0K",
+                url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Abstract", "Space", "Stars", "Nebula", "Cosmic"]
+            },
+            {
+                id: 6,
+                title: "Cybernetic Alleyway",
+                category: "Cyberpunk",
+                author: "Liam Gant",
+                res: "3840 x 2160",
+                downloads: "18.3K",
+                url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Cyberpunk", "Street", "Night", "Lights", "Futuristic"]
+            },
+            {
+                id: 7,
+                title: "Alpine Lake Reflection",
+                category: "Nature",
+                author: "Bailey Zindel",
+                res: "3840 x 2160",
+                downloads: "27.6K",
+                url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Nature", "Water", "Lake", "Mountains", "Blue"]
+            },
+            {
+                id: 8,
+                title: "Minimalist Architectural Arch",
+                category: "Architecture",
+                author: "Dmitriy Frantsev",
+                res: "3840 x 2160",
+                downloads: "15.2K",
+                url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Architecture", "Arch", "Minimal", "Light", "Shadow"]
+            },
+            {
+                id: 9,
+                title: "Monochrome Obsidian Waves",
+                category: "Minimalism",
+                author: "Andrik Langfield",
+                res: "3840 x 2160",
+                downloads: "22.9K",
+                url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Minimalism", "Dark", "Texture", "Waves", "Abstract"]
+            },
+            {
+                id: 10,
+                title: "Aurora Borealis Night Sky",
+                category: "Nature",
+                author: "Kalen Emsley",
+                res: "3840 x 2160",
+                downloads: "39.8K",
+                url: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Nature", "Aurora", "Night", "Stars", "Green"]
+            },
+            {
+                id: 11,
+                title: "Glitch Matrix Grid",
+                category: "Cyberpunk",
+                author: "Markus Spiske",
+                res: "3840 x 2160",
+                downloads: "16.4K",
+                url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Cyberpunk", "Code", "Matrix", "Green", "Tech"]
+            },
+            {
+                id: 12,
+                title: "Fluid Liquid Silk",
+                category: "Abstract",
+                author: "Milad Fakurian",
+                res: "3840 x 2160",
+                downloads: "28.1K",
+                url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=3840&auto=format&fit=crop",
+                tags: ["Abstract", "Fluid", "3D", "Silk", "Orange"]
+            }
+        ];
+
+        let currentCategory = 'All';
+        let searchQuery = '';
+        let favorites = JSON.parse(localStorage.getItem('aether_favorites')) || [];
+        let showingFavoritesOnly = false;
+        let selectedWallpaper = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+            updateFavoritesBadge();
+        });
+
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            const noResults = document.getElementById('no-results');
+            
+            let filtered = wallpapers.filter(w => {
+                const matchesCat = currentCategory === 'All' || w.category === currentCategory;
+                const matchesSearch = w.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      w.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                                      w.author.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesFav = !showingFavoritesOnly || favorites.includes(w.id);
+                return matchesCat && matchesSearch && matchesFav;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = filtered.map(w => {
+                const isFav = favorites.includes(w.id);
+                return `
+                    <div class="wallpaper-card glass-panel rounded-2xl overflow-hidden border border-white/10 group cursor-pointer relative" onclick="openModal(${w.id})">
+                        <div class="aspect-[16/10] overflow-hidden bg-black/50 relative">
+                            <img src="${w.url}" alt="${w.title}" loading="lazy" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/10">${w.category}</span>
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${w.id})" class="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md hover:bg-black text-white flex items-center justify-center transition border border-white/10">
+                                        <svg class="w-4 h-4 ${isFav ? 'text-pink-500 fill-pink-500' : 'text-white'}" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                    </button>
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-sm font-bold text-white leading-snug">${w.title}</h3>
+                                    <div class="flex items-center justify-between text-[11px] text-gray-300 font-mono">
+                                        <span>${w.res}</span>
+                                        <span class="text-indigo-400 font-medium">Quick View →</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            showingFavoritesOnly = false;
+            
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = 'cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-aether-card border border-white/10 text-gray-300 hover:text-white hover:border-indigo-500';
+            });
+            const activeBtn = document.getElementById(`cat-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = 'cat-btn px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/30';
+            }
+
+            renderGallery();
+        }
+
+        function handleSearch(query) {
+            searchQuery = query;
+            renderGallery();
+        }
+
+        function toggleFavoritesView() {
+            showingFavoritesOnly = !showingFavoritesOnly;
+            const btn = document.getElementById('fav-nav-btn');
+            if (showingFavoritesOnly) {
+                btn.className = 'px-4 py-2 rounded-full border border-indigo-500 bg-indigo-600/20 text-xs font-medium text-white transition flex items-center space-x-2';
+            } else {
+                btn.className = 'px-4 py-2 rounded-full border border-white/10 hover:border-indigo-500 bg-aether-card/60 text-xs font-medium text-gray-300 hover:text-white transition flex items-center space-x-2';
+            }
+            renderGallery();
+        }
+
+        function toggleFavorite(id) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('aether_favorites', JSON.stringify(favorites));
+            updateFavoritesBadge();
+            renderGallery();
+            if (selectedWallpaper && selectedWallpaper.id === id) {
+                updateModalFavoriteState();
+            }
+        }
+
+        function updateFavoritesBadge() {
+            document.getElementById('fav-count-badge').textContent = favorites.length;
+        }
+
+        function openModal(id) {
+            selectedWallpaper = wallpapers.find(w => w.id === id);
+            if (!selectedWallpaper) return;
+
+            document.getElementById('modal-img').src = selectedWallpaper.url;
+            document.getElementById('modal-category').textContent = selectedWallpaper.category;
+            document.getElementById('modal-title').textContent = selectedWallpaper.title;
+            document.getElementById('modal-author').innerHTML = `Photo by <span class="text-indigo-400">${selectedWallpaper.author}</span>`;
+            document.getElementById('modal-res').textContent = selectedWallpaper.res;
+            document.getElementById('modal-downloads').textContent = selectedWallpaper.downloads;
+            document.getElementById('modal-download-btn').href = selectedWallpaper.url + '&dl=1';
+
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = selectedWallpaper.tags.map(tag => `
+                <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300">#${tag}</span>
+            `).join('');
+
+            updateModalFavoriteState();
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            selectedWallpaper = null;
+        }
+
+        function toggleModalFavorite() {
+            if (selectedWallpaper) {
+                toggleFavorite(selectedWallpaper.id);
+            }
+        }
+
+        function updateModalFavoriteState() {
+            if (!selectedWallpaper) return;
+            const isFav = favorites.includes(selectedWallpaper.id);
+            const icon = document.getElementById('modal-fav-icon');
+            if (isFav) {
+                icon.className = 'w-5 h-5 text-pink-500 fill-pink-500';
+            } else {
+                icon.className = 'w-5 h-5 text-gray-300';
+            }
+        }
+
+        function copyWallpaperLink() {
+            if (!selectedWallpaper) return;
+            const textarea = document.createElement('textarea');
+            textarea.value = selectedWallpaper.url;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.textContent = 'Link Copied Successfully!';
+                setTimeout(() => {
+                    btnText.textContent = 'Copy Direct Image Link';
+                }, 2000);
+            } catch (err) {
+                console.error('Copy failed');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function openInfoModal() {
+            const el = document.createElement('div');
+            el.className = 'fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4';
+            el.innerHTML = `
+                <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-4 border border-white/10 text-center">
+                    <h3 class="text-lg font-bold text-white">License & Usage</h3>
+                    <p class="text-xs text-gray-400">All wallpapers hosted on Aether Walls are curated from Unsplash under open source license, free for personal and desktop workspace use.</p>
+                    <button onclick="this.closest('.fixed').remove()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl text-xs transition">Got it</button>
+                </div>
+            `;
+            document.body.appendChild(el);
+        }
+    </script>
+</body>
+</html>
